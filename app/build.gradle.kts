@@ -20,15 +20,43 @@ android {
         }
     }
 
+
+    signingConfigs {
+        register("Test") {
+            storeFile = file("${rootDir}/keystore/debug/debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+        register("LiveRoom") {
+            storeFile = file("${rootDir}/keystore/game/XGame.keystore")
+            storePassword = "2023makemoney"
+            keyAlias = "KingTrade"
+            keyPassword = "2023makemoney"
+        }
+    }
+
     buildTypes {
-        release {
-            isMinifyEnabled = false
+        getByName("release") {
+            isDebuggable = false
+            buildConfigField("boolean", "LOG_DEBUG", "false")
+            signingConfig = signingConfigs.getByName("LiveRoom")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+
+        getByName("debug") {
+            isDebuggable = true
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("Test")
+            buildConfigField("boolean", "LOG_DEBUG", "true")
+            signingConfig = signingConfigs["debug"]
+        }
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -38,6 +66,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"

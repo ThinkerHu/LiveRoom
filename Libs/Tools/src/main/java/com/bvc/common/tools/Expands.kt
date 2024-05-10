@@ -33,7 +33,9 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
+import java.math.BigInteger
 import java.nio.charset.Charset
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
@@ -100,6 +102,7 @@ fun String.toast(context: Context, style: Int = TOAST_DEFAULT, duration: Int = T
                 type.visibility = View.VISIBLE
                 type.setImageResource(R.mipmap.ic_error)
             }
+
             TOAST_DEFAULT -> {
                 type.visibility = View.GONE
             }
@@ -153,6 +156,20 @@ fun String.fromAssets(context: Context): String {
     }
     return ""
 }
+
+
+fun String.toMD5(): String {
+    val md = MessageDigest.getInstance("MD5")
+    val byteArray = md.digest(this.toByteArray())
+    val bigInteger = BigInteger(1, byteArray)
+    var md5 = bigInteger.toString(16)
+
+    while (md5.length < 32) {
+        md5 = "0$md5"
+    }
+    return md5
+}
+
 
 private val nextLocalRequestCode = AtomicInteger()
 
@@ -212,6 +229,7 @@ fun View.onTouchMove(finish: () -> Unit) {
             MotionEvent.ACTION_DOWN -> {
                 lastY = y
             }
+
             MotionEvent.ACTION_MOVE -> {
                 //计算移动的距离
                 val offY: Int = y - lastY
@@ -224,6 +242,7 @@ fun View.onTouchMove(finish: () -> Unit) {
                     }
                 }
             }
+
             MotionEvent.ACTION_UP -> {
                 val translateAnimation = TranslateAnimation(0f, 0f, this.y, this.height.toFloat())
                 translateAnimation.duration = 300

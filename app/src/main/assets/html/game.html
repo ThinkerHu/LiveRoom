@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebView JavaScript通信示例</title>
+    <script type="text/javascript">
+        // JavaScript函数，供Java调用
+        function showToastFromJava(message) {
+            // 调用Android对象的showToast方法
+            Android.showToast(message);
+        }
+        function pay(userId) {
+            // 调用Android对象的showToast方法
+            Android.pay(userId);
+        }
+        function closeGame() {
+            // 调用Android对象的showToast方法
+            Android.closeGame();
+        }
+    </script>
+</head>
+<body>
+<h1>WebView JavaScript通信示例</h1>
+<button onclick="showToast('toast')">在Android中显示Toast</button>
+<button onclick="pay('12212')">充值</button>
+<button onclick="closeGame">关闭游戏</button>
+</body>
+</html>

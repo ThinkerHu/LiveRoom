@@ -1,6 +1,7 @@
 package com.bvc.liveroom.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.bvc.liveroom.R
 import com.bvc.liveroom.databinding.ActivityLoginBinding
+import com.bvc.liveroom.ui.webview.GameWebView
 
 
 class LoginActivity : AppCompatActivity() {
@@ -32,8 +34,8 @@ class LoginActivity : AppCompatActivity() {
         val login = binding.login
         val loading = binding.loading
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
+        loginViewModel =
+            ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
@@ -92,8 +94,10 @@ class LoginActivity : AppCompatActivity() {
             }
 
             login.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+                startActivity(Intent(this@LoginActivity, GameWebView::class.java))
+                this@LoginActivity.finish()
+//                loading.visibility = View.VISIBLE
+//                loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
     }

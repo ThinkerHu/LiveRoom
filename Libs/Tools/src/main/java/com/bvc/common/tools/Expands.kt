@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.text.Editable
 import android.text.InputType
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.*
 import android.view.animation.Animation
@@ -18,7 +17,6 @@ import android.widget.*
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -310,7 +308,7 @@ fun View.gone() {
     this.visibility = View.GONE
 }
 
-inline fun InputStream.copyTo(
+inline fun InputStream.copyTo2(
     out: OutputStream,
     bufferSize: Int = DEFAULT_BUFFER_SIZE,
     progress: (Long) -> Unit
@@ -361,3 +359,4 @@ fun Activity.hideKeyboard() {
         inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
     }
 }
+

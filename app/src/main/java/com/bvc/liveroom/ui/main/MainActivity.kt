@@ -19,7 +19,8 @@ class MainActivity : ComponentActivity() {
 
             this@MainActivity.apply {
                 Intent(this, GameWebView::class.java).apply {
-                    putExtra("extra_url", "https://www.baidu.com")
+                    val urlPath = "file:///android_asset/html/game.html"
+                    putExtra("extra_url", urlPath)
                     this@MainActivity.startActivity(this)
                 }
             }
@@ -39,5 +40,6 @@ class MainActivity : ComponentActivity() {
                 println("Parameter: $key = $value")
             }
         }
+        //
     }
 }

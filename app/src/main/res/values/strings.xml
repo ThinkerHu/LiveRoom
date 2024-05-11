@@ -10,4 +10,9 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="close">Close</string>
+    <string name="pay">Pay</string>
+    <string name="exit_game">Alert</string>
+    <string name="sure_exit_game">Are you sure to exit game?</string>
+    <string name="sure">Sure</string>
+    <string name="cancel">Cancel</string>
 </resources>

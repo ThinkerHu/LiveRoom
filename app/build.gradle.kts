@@ -82,14 +82,6 @@ android {
 }
 
 dependencies {
-    // compose dependence
-    val composeVersion = "1.7.0"
-//    implementation("androidx.compose.ui:ui-tooling-preview-android:1.6.7")
-//    implementation("androidx.compose.ui:$composeVersion")
-//    implementation("androidx.compose.material:material:$composeVersion")
-//    implementation("androidx.activity:activity-compose:1.9.0")
-//    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -98,6 +90,11 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
+    // OKHttp  https://square.github.io/okhttp/
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9")
+
 
     implementation(project(":Libs:UI"))
     implementation(project(":Libs:Tools"))

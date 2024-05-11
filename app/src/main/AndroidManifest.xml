@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +26,9 @@
 
         <activity
             android:name=".ui.webview.GameWebView"
+            android:theme="@style/Theme.LiveRoom" />
+        <activity
+            android:name=".ui.pay.PayActivity"
             android:theme="@style/Theme.LiveRoom" />
     </application>
 

@@ -12,9 +12,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_main)
-        findViewById<Button>(R.id.btn_start_game).setOnClickListener {
-            onStartGame()
-        }
         findViewById<Button>(R.id.btn_start_webview).setOnClickListener {
 
             this@MainActivity.apply {
@@ -25,6 +22,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
     }
 
     private fun onStartGame() {

@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
@@ -62,11 +61,16 @@ class GameWebView : BaseActivity() {
             webView.loadUrl(this)
         }
 
-        findViewById<Button>(R.id.btn_call_js_method).onClick {
+        findViewById<Button>(R.id.btn_call_js_update_coin).onClick {
             val functionName = "updateCoin"
             val message = "Android call JS method:${functionName}"
             val script = "javascript:$functionName('$message');"
             webView.evaluateJavascript(script, null)
+        }
+
+        findViewById<Button>(R.id.btn_js_universal_interface).onClick {
+            val str = "alert('Hello from Android call js code');"
+            callJSCode(str)
         }
     }
 
@@ -93,6 +97,12 @@ class GameWebView : BaseActivity() {
     fun pay(userID: String) {
         Intent(this@GameWebView, PayActivity::class.java).apply {
             this@GameWebView.startActivity(this)
+        }
+    }
+
+    fun callJSCode(code: String) {
+        runOnUiThread {
+            webView.loadUrl("javascript:$code")
         }
     }
 }

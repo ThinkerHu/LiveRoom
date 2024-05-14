@@ -14,11 +14,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_call_js_method"
+        android:id="@+id/btn_call_js_update_coin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="UpdateCoin(安卓原生调用JS更新金币接口)"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_js_universal_interface"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JS通用接口(直接执行JS代码)"
+        app:layout_constraintRight_toLeftOf="@+id/btn_call_js_update_coin"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar

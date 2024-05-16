@@ -42,7 +42,7 @@ import java.util.concurrent.atomic.AtomicInteger
 inline fun <reified T> String.fromJsonToList(): List<T> =
     Gson().fromJson(this, ParameterizedTypeImpl(T::class.java))
 
-inline fun <reified T> String.fromJson(): T {
+inline fun <reified T : Any> String.fromJson(): T {
     return Gson().fromJson(this, T::class.java)
 }
 
@@ -85,7 +85,7 @@ const val TOAST_DEFAULT = 0
 const val TOAST_ERROR = 1
 
 fun String.toast(context: Context, style: Int = TOAST_DEFAULT, duration: Int = Toast.LENGTH_SHORT) {
-    if (this.isNullOrEmpty()) {
+    if (this.isEmpty()) {
         return
     }
     val applicationContext = context.applicationContext

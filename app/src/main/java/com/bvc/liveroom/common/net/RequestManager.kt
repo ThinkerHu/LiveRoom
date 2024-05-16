@@ -21,6 +21,36 @@ class RequestManager() {
         okHttpClient = HttpManager.instance().initHttpClient()
     }
 
+    fun doGetSync(
+        url: String,
+        heads: MutableMap<String, String>? = null,
+        params: MutableMap<String, String>? = null
+    ): HttpResult {
+        if (url.isEmpty()) {
+            return HttpResult.Error(ApiException(-1, "url is Empty"))
+        }
+        if (heads != null) {
+            addHeads(heads)
+        }
+        if (params != null) {
+            requestBuild.url(buildGetUrl(url, params))
+        } else {
+            requestBuild.url(url)
+        }
+        return try {
+            val response = okHttpClient!!.newCall(requestBuild.build()).execute()
+            if (response.isSuccessful) {
+                val body = response.body.string()
+                handleResultSync(body)
+            } else {
+                HttpResult.Error(ApiException(response.code, response.message))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            HttpResult.Error(ApiException(-1, e.message!!))
+        }
+    }
+
     fun doGet(
         url: String,
         heads: MutableMap<String, String>? = null,
@@ -72,10 +102,10 @@ class RequestManager() {
             val response = okHttpClient!!.newCall(requestBuild.build()).execute()
             url.logD()
             if (response.isSuccessful) {
-                val body = response.body?.string()
+                val body = response.body.string()
                 handleResult(body, httpResponse)
-                body?.apply {
-//                    this.logJson()
+                body.apply {
+                    this.logJson()
                 }
             } else {
                 httpResponse.onFailed(response.code, response.message)
@@ -104,8 +134,8 @@ class RequestManager() {
             val response = okHttpClient!!.newCall(requestBuild.build()).execute()
             url.logD()
             return if (response.isSuccessful) {
-                val body = response.body?.string()
-                body?.apply {
+                val body = response.body.string()
+                body.apply {
                     if (BuildConfig.LOG_DEBUG) {
                         this.logJson()
                     }
@@ -138,8 +168,8 @@ class RequestManager() {
             val response = okHttpClient!!.newCall(requestBuild.build()).execute()
             url.logD()
             return if (response.isSuccessful) {
-                val body = response.body?.string()
-                body?.apply {
+                val body = response.body.string()
+                body.apply {
                     if (BuildConfig.LOG_DEBUG) {
                         this.logJson()
                     }
@@ -162,9 +192,9 @@ class RequestManager() {
         }
         try {
             val jsonObject = JSONObject(body)
-            val code = jsonObject.getInt("code")
+            val code = jsonObject.getInt("errorCode")
             val message = jsonObject.getString("message")
-            if (code != 200) {
+            if (code != 0) {
                 return HttpResult.Error(ApiException(code, message))
             }
             val data = jsonObject.getString("data")
@@ -188,7 +218,7 @@ class RequestManager() {
             val jsonObject = JSONObject(body)
             val code = jsonObject.getInt("code")
             val message = jsonObject.getString("message")
-            if (code != 200) {
+            if (code != 0) {
                 return Result.failure(Exception(message))
             }
             val data = jsonObject.getString("data")
@@ -222,7 +252,7 @@ class RequestManager() {
             val jsonObject = JSONObject(body)
             val code = jsonObject.getInt("code")
             val message = jsonObject.getString("message")
-            if (code != 200) {
+            if (code != 0) {
                 httpResponse.onFailed(code, message)
                 return
             }
@@ -240,7 +270,6 @@ class RequestManager() {
     }
 
     private fun addHeads(heads: MutableMap<String, String>) {
-//        heads["ipWhiteList"] = "1"
         heads.entries.forEach { entry ->
             heads.keys
             requestBuild.addHeader(entry.key, entry.value)

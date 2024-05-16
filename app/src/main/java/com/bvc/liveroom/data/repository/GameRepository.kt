@@ -1,43 +1,60 @@
 package com.bvc.liveroom.data.repository
 
+import com.bvc.common.tools.fromJson
+import com.bvc.liveroom.common.constants.ApiConfig
+import com.bvc.liveroom.common.net.ApiResult
+import com.bvc.liveroom.common.net.HttpResult
+import com.bvc.liveroom.common.net.RequestManager
+import com.bvc.liveroom.data.model.RequestToken
+import com.bvc.liveroom.data.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 object GameRepository {
 
-    suspend fun fetchUserInfo() = withContext(Dispatchers.IO) {
+    suspend fun fetchUserInfo(
+        token: String
+    ): ApiResult<User> = withContext(Dispatchers.IO) {
         val params = HashMap<String, String>()
-        params["password"] = password
-        params["username"] = phoneNumber
-        params["localLan"] = ApiConfig.LOCAL_LAN
-        val heads = HashMap<String, String>()
-        heads["Authorization"] = ApiConfig.QUERY_TOKEN
-        val httpResult = RequestManager().doPostSync(
-            ApiConfig.USER_LOGIN,
+        val heads = hashMapOf(
+            "Authorization" to token
+        )
+        val httpResult = RequestManager().doGetSync(
+            ApiConfig.FETCH_USER_INFO,
             heads = heads,
             params = params
         )
         when (httpResult) {
             is HttpResult.Success -> {
-                val token = httpResult.msg.fromJson<RequestToken>()
-                if (token != null) {
-                    setSPValue(SP_QUERY_TOKEN_KEY, token.tokenStr(), FiApp.instance())
-                    ApiConfig.QUERY_TOKEN = token.tokenStr()
-                    getUserInfo(result)
-                } else {
-                    result(ApiResult.Error(ApiException(-1, "Result is Empty")))
-                }
+                val user = httpResult.msg.fromJson<User>()
+                return@withContext ApiResult.Success(user)
             }
 
             is HttpResult.Error -> {
-                result(ApiResult.Error(httpResult.exception))
+                return@withContext ApiResult.Error(httpResult.exception)
             }
         }
     }
 
-    suspend fun fetchToken() = withContext(Dispatchers.IO) {
+    suspend fun login(userName: String, password: String): ApiResult<RequestToken> =
+        withContext(Dispatchers.IO) {
+            val params = hashMapOf(
+                "username" to userName,
+                "password" to password
+            )
+            RequestManager().doPostSync(ApiConfig.FETCH_TOKEN, null, params).let {
+                when (it) {
+                    is HttpResult.Success -> {
+                        val requestToken = it.msg.fromJson<RequestToken>()
+                        return@let ApiResult.Success(requestToken)
+                    }
 
-    }
+                    is HttpResult.Error -> {
+                        return@let ApiResult.Error(it.exception)
+                    }
+                }
+            }
+        }
 
     suspend fun fetchRechargeList() = withContext(Dispatchers.IO) {
 

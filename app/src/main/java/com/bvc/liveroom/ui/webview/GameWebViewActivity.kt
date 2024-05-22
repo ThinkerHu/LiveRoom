@@ -1,6 +1,7 @@
 package com.bvc.liveroom.ui.webview
 
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
@@ -12,7 +13,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.Toast
 import com.bvc.base.ui.BaseActivity
 import com.bvc.common.tools.hide
 import com.bvc.common.tools.logD
@@ -26,6 +26,7 @@ class GameWebView : BaseActivity() {
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         title = "WebView"
@@ -64,7 +65,7 @@ class GameWebView : BaseActivity() {
         findViewById<Button>(R.id.btn_call_js_update_coin).onClick {
             val functionName = "updateCoin()"
             val script = "javascript:$functionName"
-            webView.evaluateJavascript(script){
+            webView.evaluateJavascript(script) {
                 it.logD()
             }
         }
@@ -118,15 +119,6 @@ class JSBridge(private var gameWebView: GameWebView?) {
         gameWebView?.apply {
             runOnUiThread {
                 this.pay()
-            }
-        }
-    }
-
-    @JavascriptInterface
-    fun showToast(msg: String) {
-        gameWebView?.apply {
-            runOnUiThread {
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -85,16 +85,29 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onStartGame() {
-        //https://games.leadercc.com/test/index.html?uid=1&token=2&lang=zh-CN&roomid=1   // 游戏地址以接入为
+        //https://games.leader cc.com/test/index.html?uid=1&token=2&lang=zh-CN&roomid=1   // 游戏地址以接入为
+        val gameOriginUrl = "https://gztest.leadercc.com/pokavoice_games/wheel/index.html"
         user?.apply {
             val gameUrl =
-                "https://gztest.leadercc.com/pokavoice_games/wheel/index.html?uid=${this.id}" +
-                        "&token=${user!!.gameToken}&gameid=1&roomid=1&lang=th-TH"
+                formatGameUrl(
+                    gameOriginUrl, uid = id, gameToken = gameToken,
+                    gameId = "1", language = "th-TH"
+                )
             Intent(this@MainActivity, GameWebView::class.java).apply {
                 putExtra("extra_url", gameUrl)
                 this@MainActivity.startActivity(this)
             }
         }
+    }
+
+    private fun formatGameUrl(
+        gameUrl: String,
+        uid: String,
+        gameToken: String,
+        gameId: String,
+        language: String
+    ): String {
+        return "${gameUrl}?uid=${uid}&token=${gameToken}&gameid=${gameId}&lang=${language}"
     }
 
     private fun onStartLocalTestHtmlPage() {

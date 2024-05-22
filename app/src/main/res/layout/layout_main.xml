@@ -20,6 +20,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_game_test_title" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_start_local_test_webpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="StartLocalTestWeb"
+        app:layout_constraintLeft_toRightOf="@+id/btn_start_webview"
+        app:layout_constraintTop_toBottomOf="@+id/tv_game_test_title" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_servet_interface_test_title"
         android:layout_width="wrap_content"

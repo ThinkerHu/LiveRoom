@@ -6,19 +6,20 @@ import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.lifecycleScope
-import com.bvc.common.tools.logE
 import com.bvc.common.tools.onClick
 import com.bvc.common.tools.toast
 import com.bvc.liveroom.R
 import com.bvc.liveroom.common.net.ApiResult
+import com.bvc.liveroom.data.model.RequestToken
+import com.bvc.liveroom.data.model.User
 import com.bvc.liveroom.data.repository.GameRepository
 import com.bvc.liveroom.ui.webview.GameWebView
 import kotlinx.coroutines.launch
-import java.net.URLDecoder
 
 class MainActivity : ComponentActivity() {
     private lateinit var console: AppCompatTextView
-    private var token: String = ""
+    private var token: RequestToken? = null
+    private var user: User? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_main)
@@ -33,20 +34,27 @@ class MainActivity : ComponentActivity() {
             fetchUserInfo()
         }
 
+        findViewById<Button>(R.id.btn_start_local_test_webpage).onClick {
+            onStartLocalTestHtmlPage()
+        }
+
         console = findViewById(R.id.tv_console)
     }
 
     private fun fetchUserInfo() {
         lifecycleScope.launch {
             updateConsole("fetchUserInfo")
-            GameRepository.fetchUserInfo(token).let {
-                when (it) {
-                    is ApiResult.Error -> {
-                        updateConsole(it.apiException.msg)
-                    }
+            token?.getRequestToken().let { userToken ->
+                GameRepository.fetchUserInfo(userToken!!).let {
+                    when (it) {
+                        is ApiResult.Error -> {
+                            updateConsole(it.apiException.msg)
+                        }
 
-                    is ApiResult.Success -> {
-                        updateConsole(it.data.toString())
+                        is ApiResult.Success -> {
+                            updateConsole(it.data.toString())
+                            user = it.data
+                        }
                     }
                 }
             }
@@ -62,7 +70,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     is ApiResult.Success -> {
-                        token = it.data.getRequestToken()
+                        token = it.data
                         updateConsole(it.data.getRequestToken())
                     }
                 }
@@ -77,21 +85,21 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onStartGame() {
-        //https://games.leadercc.com/test/index.html?uid=1&token=2&lang=zh-CN&roomid=1   // 游戏地址以接入为准
-        val gameUrl =
-            "https://gztest.leadercc.com/pokavoice_games/wheel/index.html?uid=100&GameId=1&roomid=1&lang=ms-MY"
-        val url = URLDecoder.decode(gameUrl, "UTF-8")
-        val params = url.split("?").getOrNull(1)
-        params?.split("&")?.forEach { param ->
-            val keyValue = param.split("=")
-            if (keyValue.size == 2) {
-                val key = keyValue[0]
-                val value = keyValue[1]
-                println("Parameter: $key = $value")
+        //https://games.leadercc.com/test/index.html?uid=1&token=2&lang=zh-CN&roomid=1   // 游戏地址以接入为
+        user?.apply {
+            val gameUrl =
+                "https://gztest.leadercc.com/pokavoice_games/wheel/index.html?uid=${this.id}" +
+                        "&token=${user!!.gameToken}&gameid=1&roomid=1&lang=th-TH"
+            Intent(this@MainActivity, GameWebView::class.java).apply {
+                putExtra("extra_url", gameUrl)
+                this@MainActivity.startActivity(this)
             }
         }
-        Intent(this, GameWebView::class.java).apply {
-            putExtra("extra_url", gameUrl)
+    }
+
+    private fun onStartLocalTestHtmlPage() {
+        Intent(this@MainActivity, GameWebView::class.java).apply {
+            putExtra("extra_url", "file:///android_asset/html/game.html")
             this@MainActivity.startActivity(this)
         }
     }

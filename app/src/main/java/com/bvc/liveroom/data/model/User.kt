@@ -9,5 +9,6 @@ data class User(
     val coin: Long,
     val state: Int,
     val createTime: String,
-    val avatar: String
+    val avatar: String,
+    val gameToken: String
 )

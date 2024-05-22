@@ -24,6 +24,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.gson.Gson
+import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -62,22 +63,21 @@ class ParameterizedTypeImpl(val clz: Class<*>) : ParameterizedType {
 
 
 fun Long.toDate(pattern: String = "HH:mm:ss"): String {
-
     val date = Date(this)
-    val format = SimpleDateFormat(pattern)
+    val format = SimpleDateFormat(pattern, Locale.getDefault())
     return format.format(date)
 }
 
 fun Long.toFullDate(): String {
     val date = Date(this)
     val pattern = "yyyy:MM:dd HH:mm:ss"
-    val format = SimpleDateFormat(pattern)
+    val format = SimpleDateFormat(pattern, Locale.getDefault())
     return format.format(date)
 }
 
 fun Long.isToday(): Boolean {
     val pattern = "yyyy:MM:dd"
-    val format = SimpleDateFormat(pattern)
+    val format = SimpleDateFormat(pattern,Locale.getDefault())
     return format.format(Date(this)) == format.format(Date())
 }
 
@@ -123,18 +123,22 @@ fun Int.toast(context: Context, style: Int = TOAST_ERROR, duration: Int = Toast.
 }
 
 fun String.logD() {
+    Logger.addLogAdapter(AndroidLogAdapter())
     Logger.d(this)
 }
 
 fun String.logW() {
+    Logger.addLogAdapter(AndroidLogAdapter())
     Logger.w(this)
 }
 
 fun String.logE() {
+    Logger.addLogAdapter(AndroidLogAdapter())
     Logger.e(this)
 }
 
 fun String.logJson() {
+    Logger.addLogAdapter(AndroidLogAdapter())
     Logger.json(this)
 }
 

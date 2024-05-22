@@ -2,7 +2,6 @@ package com.bvc.liveroom.ui.webview
 
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -16,6 +15,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import com.bvc.base.ui.BaseActivity
 import com.bvc.common.tools.hide
+import com.bvc.common.tools.logD
 import com.bvc.common.tools.onClick
 import com.bvc.common.tools.show
 import com.bvc.liveroom.R
@@ -33,7 +33,7 @@ class GameWebView : BaseActivity() {
         webView = findViewById(R.id.wv_game)
         progressBar = findViewById(R.id.progressBar)
         webView.apply {
-            addJavascriptInterface(JSBridge(this@GameWebView), "Android")
+            addJavascriptInterface(JSBridge(this@GameWebView), "LingxianAndroid")
             webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView?, newProgress: Int) {
                     super.onProgressChanged(view, newProgress)
@@ -62,10 +62,11 @@ class GameWebView : BaseActivity() {
         }
 
         findViewById<Button>(R.id.btn_call_js_update_coin).onClick {
-            val functionName = "updateCoin"
-            val message = "Android call JS method:${functionName}"
-            val script = "javascript:$functionName('$message');"
-            webView.evaluateJavascript(script, null)
+            val functionName = "updateCoin()"
+            val script = "javascript:$functionName"
+            webView.evaluateJavascript(script){
+                it.logD()
+            }
         }
 
         findViewById<Button>(R.id.btn_js_universal_interface).onClick {
@@ -78,29 +79,23 @@ class GameWebView : BaseActivity() {
         AlertDialog.Builder(this).apply {
             setTitle(R.string.exit_game)
             setMessage(R.string.sure_exit_game)
-            setNegativeButton(R.string.cancel, object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-                    dialog?.dismiss()
-                }
-
-            })
-            setPositiveButton(R.string.sure, object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-                    this@GameWebView.finish()
-                }
-
-            })
+            setNegativeButton(
+                R.string.cancel
+            ) { dialog, _ -> dialog?.dismiss() }
+            setPositiveButton(
+                R.string.sure
+            ) { _, _ -> this@GameWebView.finish() }
             create()
         }.show()
     }
 
-    fun pay(userID: String) {
+    fun pay() {
         Intent(this@GameWebView, PayActivity::class.java).apply {
             this@GameWebView.startActivity(this)
         }
     }
 
-    fun callJSCode(code: String) {
+    private fun callJSCode(code: String) {
         runOnUiThread {
             webView.loadUrl("javascript:$code")
         }
@@ -119,10 +114,10 @@ class JSBridge(private var gameWebView: GameWebView?) {
     }
 
     @JavascriptInterface
-    fun pay(userID: String) {
+    fun pay() {
         gameWebView?.apply {
             runOnUiThread {
-                this.pay(userID)
+                this.pay()
             }
         }
     }

@@ -19,18 +19,23 @@
         // JavaScript函数，供Java调用
         function showToastFromJava(message) {
             // 调用Android对象的showToast方法
-            Android.showToast(message);
+            LingxianAndroid.showToast(message);
             console.log("showToastFromJava called");
         }
-        function pay(userId) {
-            // 调用Android对象的showToast方法
-            Android.pay(userId);
+
+        function pay() {
+            // 调用Android对象的Pay方法
+            LingxianAndroid.pay();
             console.log("pay called");
         }
         function closeGame() {
-            // 调用Android对象的showToast方法
-            Android.closeGame();
+            // 调用Android对象的closeGame方法
+            LingxianAndroid.closeGame();
             console.log("closeGame called");
+        }
+
+        window.updateCoin = function() {
+           console.log("updateCoin method called");
         }
 
         function updateCoin(message){
@@ -38,9 +43,6 @@
             var messageDiv = document.getElementById("message");
             messageDiv.innerHTML = message;
         }
-
-
-
 
     </script>
 </head>

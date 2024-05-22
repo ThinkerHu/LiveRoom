@@ -38,7 +38,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     // third libs
     // Gson
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.11.0")
     // Logger https://github.com/orhanobut/logger
     implementation("com.orhanobut:logger:2.2.0")
 }

@@ -68,7 +68,6 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
-//        compose = true
     }
 
     composeOptions {
@@ -78,10 +77,6 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
-    }
-
-    lint{
-        abortOnError = false
     }
 }
 
@@ -95,8 +90,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
     // OKHttp  https://square.github.io/okhttp/
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
 
 
     implementation(project(":Libs:UI"))

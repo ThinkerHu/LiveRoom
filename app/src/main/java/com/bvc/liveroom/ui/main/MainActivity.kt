@@ -14,6 +14,7 @@ import com.bvc.liveroom.data.model.RequestToken
 import com.bvc.liveroom.data.model.User
 import com.bvc.liveroom.data.repository.GameRepository
 import com.bvc.liveroom.ui.webview.GameWebView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -85,7 +86,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onStartGame() {
-        //https://games.leader cc.com/test/index.html?uid=1&token=2&lang=zh-CN&roomid=1   // 游戏地址以接入为
         val gameOriginUrl = "https://gztest.leadercc.com/pokavoice_games/wheel/index.html"
         user?.apply {
             val gameUrl =

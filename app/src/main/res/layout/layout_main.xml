@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_game_test_title"
@@ -65,11 +66,21 @@
         android:id="@+id/tv_console"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
         android:background="@color/cardview_dark_background"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_fetch_token"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_fetch_token" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_game_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_console"
+        tools:listitem="@layout/item_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

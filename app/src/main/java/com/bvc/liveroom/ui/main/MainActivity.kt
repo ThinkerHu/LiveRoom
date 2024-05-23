@@ -2,23 +2,34 @@ package com.bvc.liveroom.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnClickListener
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bvc.common.tools.fromAssets
+import com.bvc.common.tools.fromJsonToList
+import com.bvc.common.tools.logD
 import com.bvc.common.tools.onClick
 import com.bvc.common.tools.toast
 import com.bvc.liveroom.R
+import com.bvc.liveroom.common.constants.ApiConfig
 import com.bvc.liveroom.common.net.ApiResult
+import com.bvc.liveroom.data.model.Game
 import com.bvc.liveroom.data.model.RequestToken
 import com.bvc.liveroom.data.model.User
 import com.bvc.liveroom.data.repository.GameRepository
 import com.bvc.liveroom.ui.webview.GameWebView
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private lateinit var console: AppCompatTextView
+    private lateinit var gameList: RecyclerView
     private var token: RequestToken? = null
     private var user: User? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +51,18 @@ class MainActivity : ComponentActivity() {
         }
 
         console = findViewById(R.id.tv_console)
+
+        gameList = findViewById<RecyclerView?>(R.id.rv_game_list).apply {
+            layoutManager = GridLayoutManager(this@MainActivity, 4)
+            val gameList = fetchGameList()
+            adapter = GameGridAdapter(gameList) {
+                onStartGame(it)
+            }
+        }
+    }
+
+    private fun fetchGameList(): List<Game> {
+        return "config/GameList.json".fromAssets(this).fromJsonToList<Game>()
     }
 
     private fun fetchUserInfo() {
@@ -72,6 +95,7 @@ class MainActivity : ComponentActivity() {
 
                     is ApiResult.Success -> {
                         token = it.data
+                        ApiConfig.userToken = it.data.getRequestToken()
                         updateConsole(it.data.getRequestToken())
                     }
                 }
@@ -86,13 +110,35 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onStartGame() {
-        val gameOriginUrl = "https://gztest.leadercc.com/pokavoice_games/wheel/index.html"
+        val gameOriginUrl = "https://gztest.leadercc.com/pokavoice_games/fish6/index.html"
         user?.apply {
             val gameUrl =
                 formatGameUrl(
                     gameOriginUrl, uid = id, gameToken = gameToken,
-                    gameId = "1", language = "th-TH"
+                    gameId = "3", language = "zh-CN"
                 )
+            gameUrl.logD()
+            Intent(this@MainActivity, GameWebView::class.java).apply {
+                putExtra("extra_url", gameUrl)
+                this@MainActivity.startActivity(this)
+            }
+        }
+    }
+
+    private fun onStartGame(game: Game) {
+        if (user == null){
+            getString(R.string.is_not_login).toast(this)
+            return
+        }
+        user!!.apply {
+            val gameUrl =
+                formatGameUrl(
+                    game.url, uid = id,
+                    gameToken = gameToken,
+                    gameId = game.id,
+                    language = "th-TH"
+                )
+            gameUrl.logD()
             Intent(this@MainActivity, GameWebView::class.java).apply {
                 putExtra("extra_url", gameUrl)
                 this@MainActivity.startActivity(this)
@@ -116,4 +162,37 @@ class MainActivity : ComponentActivity() {
             this@MainActivity.startActivity(this)
         }
     }
+
+    class GameGridAdapter(
+        private val gameList: List<Game>,
+        private val onItemClick: (game: Game) -> Unit
+    ) :
+        RecyclerView.Adapter<GameGridAdapter.GameViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
+            return GameViewHolder(view)
+        }
+
+        override fun getItemCount(): Int {
+            return gameList.size
+        }
+
+        override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
+            val game = gameList[position]
+            holder.gameName.apply {
+                text = game.name
+                setOnClickListener {
+                    game.name.toast(this.context)
+                    onItemClick(game)
+                }
+            }
+        }
+
+        class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val gameName: AppCompatTextView = itemView.findViewById(R.id.tv_game_name)
+        }
+    }
+
 }

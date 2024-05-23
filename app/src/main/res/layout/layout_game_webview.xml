@@ -27,7 +27,8 @@
         android:layout_height="wrap_content"
         android:text="JS通用接口(直接执行JS代码)"
         app:layout_constraintRight_toLeftOf="@+id/btn_call_js_update_coin"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -63,4 +63,29 @@ object GameRepository {
     suspend fun pay(id: String) = withContext(Dispatchers.IO) {
 
     }
+
+    suspend fun recharge(coin: Long, orderId: String, token: String): ApiResult<Boolean> =
+        withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                val params = hashMapOf(
+                    "coin" to coin.toString(),
+                    "orderId" to orderId
+                )
+                val heads = hashMapOf(
+                    "Authorization" to token
+                )
+                RequestManager().doPostSync(ApiConfig.RECHARGE, heads = heads, params = params)
+                    .let {
+                        when (it) {
+                            is HttpResult.Success -> {
+                                return@let ApiResult.Success(true)
+                            }
+
+                            is HttpResult.Error -> {
+                                return@let ApiResult.Error(it.exception)
+                            }
+                        }
+                    }
+            }
+        }
 }

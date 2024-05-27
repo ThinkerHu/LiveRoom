@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bvc.common.tools.fromAssets
 import com.bvc.common.tools.fromJsonToList
 import com.bvc.common.tools.logD
+import com.bvc.common.tools.logE
 import com.bvc.common.tools.onClick
 import com.bvc.common.tools.toast
 import com.bvc.liveroom.R
@@ -48,6 +49,10 @@ class MainActivity : ComponentActivity() {
 
         findViewById<Button>(R.id.btn_start_local_test_webpage).onClick {
             onStartLocalTestHtmlPage()
+        }
+
+        findViewById<Button>(R.id.btn_pay_test).onClick {
+            payTest()
         }
 
         console = findViewById(R.id.tv_console)
@@ -103,6 +108,29 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun payTest() {
+        lifecycleScope.launch {
+            ApiConfig.userToken.logE()
+            GameRepository.pay(
+                "test@gamil.com",
+                "12345657",
+                "18100000000",
+                1000f,
+                ApiConfig.userToken
+            ).let {
+                when (it) {
+                    is ApiResult.Error -> {
+                        "PayFailed:${it.apiException.msg}".toast(this@MainActivity)
+                    }
+
+                    is ApiResult.Success -> {
+                        updateConsole(it.data.orderNo)
+                    }
+                }
+            }
+        }
+    }
+
     private fun updateConsole(msg: String) {
         runOnUiThread {
             console.text = msg
@@ -126,7 +154,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onStartGame(game: Game) {
-        if (user == null){
+        if (user == null) {
             getString(R.string.is_not_login).toast(this)
             return
         }

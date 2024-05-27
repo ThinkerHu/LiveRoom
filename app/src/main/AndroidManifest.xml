@@ -29,7 +29,7 @@
             android:name=".ui.webview.GameWebView"
             android:theme="@style/Theme.LiveRoom.NoTitleBar" />
         <activity
-            android:name=".ui.pay.PayActivity"
+            android:name=".ui.recharge.RechargeActivity"
             android:theme="@style/Theme.LiveRoom" />
     </application>
 

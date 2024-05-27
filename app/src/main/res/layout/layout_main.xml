@@ -42,6 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="FethToken"
+        android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_servet_interface_test_title" />
 
@@ -50,6 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="FetchUserInfo"
+        android:textAllCaps="false"
         app:layout_constraintLeft_toRightOf="@+id/btn_fetch_token"
         app:layout_constraintTop_toBottomOf="@+id/tv_servet_interface_test_title" />
 
@@ -59,8 +61,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="UpdateCoin"
+        android:textAllCaps="false"
         app:layout_constraintLeft_toRightOf="@+id/btn_fetch_user_info"
         app:layout_constraintTop_toBottomOf="@+id/tv_servet_interface_test_title" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_pay_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PayTest"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toRightOf="@+id/btn_update_coin"
+        app:layout_constraintTop_toBottomOf="@+id/tv_servet_interface_test_title" />
+
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_console"

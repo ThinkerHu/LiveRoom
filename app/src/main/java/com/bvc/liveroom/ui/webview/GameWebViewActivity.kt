@@ -19,7 +19,7 @@ import com.bvc.common.tools.logD
 import com.bvc.common.tools.onClick
 import com.bvc.common.tools.show
 import com.bvc.liveroom.R
-import com.bvc.liveroom.ui.pay.PayActivity
+import com.bvc.liveroom.ui.recharge.RechargeActivity
 
 
 class GameWebView : BaseActivity() {
@@ -91,7 +91,7 @@ class GameWebView : BaseActivity() {
     }
 
     fun pay() {
-        Intent(this@GameWebView, PayActivity::class.java).apply {
+        Intent(this@GameWebView, RechargeActivity::class.java).apply {
             this@GameWebView.startActivity(this)
         }
     }

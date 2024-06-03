@@ -1,6 +1,6 @@
 package com.bvc.liveroom.data.model
 
 data class RechargeItem(
-    val amount: Int,
-    val price: Float
+    val coins: Long,
+    val price: Long
 )

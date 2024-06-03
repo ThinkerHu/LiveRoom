@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class RechargeViewModel : ViewModel() {
 
-    private val _rechargeStateFlow = MutableStateFlow(RechargeState.Idle)
+    private var _rechargeStateFlow = MutableStateFlow<RechargeState>(RechargeState.Idle)
 
     val rechargeState: StateFlow<RechargeState> get() = _rechargeStateFlow
 
@@ -29,7 +29,9 @@ class RechargeViewModel : ViewModel() {
     }
 
     private fun rechargeItemClick(item: RechargeItem) {
-
+        workScope.launch {
+            //
+        }
     }
 
     private fun fetchRechargeList() {
@@ -37,11 +39,12 @@ class RechargeViewModel : ViewModel() {
             GameRepository.fetchRechargeList(ApiConfig.userToken).apply {
                 when (this) {
                     is ApiResult.Error -> {
-
+                        _rechargeStateFlow.value = RechargeState.Loading(false)
                     }
 
                     is ApiResult.Success -> {
-
+                        _rechargeStateFlow.value = RechargeState.Loading(false)
+                        _rechargeStateFlow.value = RechargeState.RechargeList(this.data)
                     }
                 }
             }

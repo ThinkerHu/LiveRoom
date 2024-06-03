@@ -132,7 +132,6 @@ class RequestManager() {
         requestBuild.url(url).post(addPostParams(params))
         try {
             val response = okHttpClient!!.newCall(requestBuild.build()).execute()
-            url.logD()
             return if (response.isSuccessful) {
                 val body = response.body.string()
                 body.apply {

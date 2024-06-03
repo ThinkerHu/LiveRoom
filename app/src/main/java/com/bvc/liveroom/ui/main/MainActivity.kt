@@ -109,26 +109,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun payTest() {
-        lifecycleScope.launch {
-            ApiConfig.userToken.logE()
-            GameRepository.pay(
-                "test@gamil.com",
-                "12345657",
-                "18100000000",
-                1000f,
-                ApiConfig.userToken
-            ).let {
-                when (it) {
-                    is ApiResult.Error -> {
-                        "PayFailed:${it.apiException.msg}".toast(this@MainActivity)
-                    }
-
-                    is ApiResult.Success -> {
-                        updateConsole(it.data.orderNo)
-                    }
-                }
-            }
-        }
+        // TODO
     }
 
     private fun updateConsole(msg: String) {

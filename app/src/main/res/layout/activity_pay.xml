@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:text="充值页面，功能交互待确认"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_recharge"

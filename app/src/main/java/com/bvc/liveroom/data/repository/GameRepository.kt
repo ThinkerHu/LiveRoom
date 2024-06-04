@@ -6,7 +6,7 @@ import com.bvc.liveroom.common.constants.ApiConfig
 import com.bvc.liveroom.common.net.ApiResult
 import com.bvc.liveroom.common.net.HttpResult
 import com.bvc.liveroom.common.net.RequestManager
-import com.bvc.liveroom.data.model.PayOrderResult
+import com.bvc.liveroom.data.model.RechargeOrder
 import com.bvc.liveroom.data.model.RechargeItem
 import com.bvc.liveroom.data.model.RequestToken
 import com.bvc.liveroom.data.model.User
@@ -61,9 +61,9 @@ object GameRepository {
         gameId: String,
         amount: String,
         token: String,
-    ): ApiResult<PayOrderResult> = withContext(Dispatchers.IO) {
+    ): ApiResult<RechargeOrder> = withContext(Dispatchers.IO) {
         val params = hashMapOf(
-            "email" to user.email,
+            "email" to "12122@gmail.com",
             "gameId" to gameId,
             "mobile" to user.phone,
             "name" to user.nickname,
@@ -79,7 +79,7 @@ object GameRepository {
                 }
 
                 is HttpResult.Success -> {
-                    val payOrderResult = it.msg.fromJson<PayOrderResult>()
+                    val payOrderResult = it.msg.fromJson<RechargeOrder>()
                     return@withContext ApiResult.Success(payOrderResult)
                 }
             }

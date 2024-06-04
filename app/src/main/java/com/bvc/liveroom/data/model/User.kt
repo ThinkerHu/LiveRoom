@@ -6,7 +6,7 @@ data class User(
     val password: String,
     val nickname: String,
     val phone: String,
-    val email: String,
+    val email: String = "12122@qq.com",
     val coin: Long,
     val state: Int,
     val createTime: String,

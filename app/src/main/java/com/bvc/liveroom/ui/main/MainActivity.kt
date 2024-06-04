@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.ComponentActivity
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bvc.common.tools.fromAssets
 import com.bvc.common.tools.fromJsonToList
 import com.bvc.common.tools.logD
-import com.bvc.common.tools.logE
 import com.bvc.common.tools.onClick
 import com.bvc.common.tools.toast
 import com.bvc.liveroom.R
@@ -23,7 +21,6 @@ import com.bvc.liveroom.common.constants.ApiConfig
 import com.bvc.liveroom.common.net.ApiResult
 import com.bvc.liveroom.data.model.Game
 import com.bvc.liveroom.data.model.RequestToken
-import com.bvc.liveroom.data.model.User
 import com.bvc.liveroom.data.repository.GameRepository
 import com.bvc.liveroom.ui.webview.GameWebView
 import kotlinx.coroutines.launch
@@ -32,7 +29,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var console: AppCompatTextView
     private lateinit var gameList: RecyclerView
     private var token: RequestToken? = null
-    private var user: User? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_main)
@@ -82,7 +78,7 @@ class MainActivity : ComponentActivity() {
 
                         is ApiResult.Success -> {
                             updateConsole(it.data.toString())
-                            user = it.data
+                            ApiConfig.user = it.data
                         }
                     }
                 }
@@ -120,12 +116,10 @@ class MainActivity : ComponentActivity() {
 
     private fun onStartGame() {
         val gameOriginUrl = "https://gztest.leadercc.com/pokavoice_games/fish6/index.html"
-        user?.apply {
-            val gameUrl =
-                formatGameUrl(
-                    gameOriginUrl, uid = id, gameToken = gameToken,
-                    gameId = "3", language = "zh-CN"
-                )
+        ApiConfig.user?.apply {
+            val gameUrl = formatGameUrl(
+                gameOriginUrl, uid = id, gameToken = gameToken, gameId = "3", language = "zh-CN"
+            )
             gameUrl.logD()
             Intent(this@MainActivity, GameWebView::class.java).apply {
                 putExtra("extra_url", gameUrl)
@@ -135,18 +129,14 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onStartGame(game: Game) {
-        if (user == null) {
+        if (ApiConfig.user == null) {
             getString(R.string.is_not_login).toast(this)
             return
         }
-        user!!.apply {
-            val gameUrl =
-                formatGameUrl(
-                    game.url, uid = id,
-                    gameToken = gameToken,
-                    gameId = game.id,
-                    language = "th-TH"
-                )
+        ApiConfig.user!!.apply {
+            val gameUrl = formatGameUrl(
+                game.url, uid = id, gameToken = gameToken, gameId = game.id, language = "th-TH"
+            )
             gameUrl.logD()
             Intent(this@MainActivity, GameWebView::class.java).apply {
                 putExtra("extra_url", gameUrl)
@@ -156,11 +146,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun formatGameUrl(
-        gameUrl: String,
-        uid: String,
-        gameToken: String,
-        gameId: String,
-        language: String
+        gameUrl: String, uid: String, gameToken: String, gameId: String, language: String
     ): String {
         return "${gameUrl}?uid=${uid}&token=${gameToken}&gameid=${gameId}&lang=${language}"
     }
@@ -173,10 +159,8 @@ class MainActivity : ComponentActivity() {
     }
 
     class GameGridAdapter(
-        private val gameList: List<Game>,
-        private val onItemClick: (game: Game) -> Unit
-    ) :
-        RecyclerView.Adapter<GameGridAdapter.GameViewHolder>() {
+        private val gameList: List<Game>, private val onItemClick: (game: Game) -> Unit
+    ) : RecyclerView.Adapter<GameGridAdapter.GameViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
             val view =

@@ -16,4 +16,5 @@
     <string name="sure">Sure</string>
     <string name="cancel">Cancel</string>
     <string name="is_not_login">No User Info,Login first</string>
+    <string name="title_recharge">Recharge</string>
 </resources>

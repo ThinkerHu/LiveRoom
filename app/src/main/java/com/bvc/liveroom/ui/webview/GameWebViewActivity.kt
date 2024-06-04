@@ -19,10 +19,10 @@ import com.bvc.common.tools.logD
 import com.bvc.common.tools.onClick
 import com.bvc.common.tools.show
 import com.bvc.liveroom.R
-import com.bvc.liveroom.ui.recharge.RechargeActivity
+import com.bvc.liveroom.ui.recharge.RechargeListActivity
 
 
-class GameWebView : BaseActivity() {
+open class GameWebView : BaseActivity() {
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
 
@@ -91,7 +91,7 @@ class GameWebView : BaseActivity() {
     }
 
     fun pay() {
-        Intent(this@GameWebView, RechargeActivity::class.java).apply {
+        Intent(this@GameWebView, RechargeListActivity::class.java).apply {
             this@GameWebView.startActivity(this)
         }
     }

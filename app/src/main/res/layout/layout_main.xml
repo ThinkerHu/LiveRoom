@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_game_test_title"
@@ -33,47 +33,67 @@
         android:id="@+id/tv_servet_interface_test_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-------游戏接口测试-------"
+        android:text="------------游戏接口测试--------------"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_start_webview" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_fetch_token"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_user_interface"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FethToken"
-        android:textAllCaps="false"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_servet_interface_test_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_servet_interface_test_title">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_fetch_user_info"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户接口：" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_fetch_token"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FethToken"
+            android:textAllCaps="false" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_fetch_user_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FetchUserInfo"
+            android:textAllCaps="false" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_update_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UpdateCoin"
+            android:textAllCaps="false"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_recharge_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RechargeTest"
+            android:textAllCaps="false"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_game_interface"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FetchUserInfo"
-        android:textAllCaps="false"
-        app:layout_constraintLeft_toRightOf="@+id/btn_fetch_token"
-        app:layout_constraintTop_toBottomOf="@+id/tv_servet_interface_test_title" />
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_user_interface">
 
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_update_coin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UpdateCoin"
-        android:textAllCaps="false"
-        app:layout_constraintLeft_toRightOf="@+id/btn_fetch_user_info"
-        app:layout_constraintTop_toBottomOf="@+id/tv_servet_interface_test_title" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_pay_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PayTest"
-        android:textAllCaps="false"
-        app:layout_constraintLeft_toRightOf="@+id/btn_update_coin"
-        app:layout_constraintTop_toBottomOf="@+id/tv_servet_interface_test_title" />
-
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="游戏接口：" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_console"
@@ -84,15 +104,15 @@
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_fetch_token" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_game_interface" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_game_list"
         android:layout_width="match_parent"
         android:layout_height="0dip"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_console"
         tools:listitem="@layout/item_layout" />
 

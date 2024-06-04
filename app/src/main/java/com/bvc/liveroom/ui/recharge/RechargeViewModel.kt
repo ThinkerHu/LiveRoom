@@ -99,7 +99,7 @@ class RechargeViewModel : ViewModel() {
         }
     }
 
-    fun stopPolling(errorMsg: String = "Recharge Canceled") {
+    private fun stopPolling(errorMsg: String = "Recharge Canceled") {
         _rechargeStateFlow.value = RechargeState.Error(errorMsg)
         pollingJob?.cancel()
     }

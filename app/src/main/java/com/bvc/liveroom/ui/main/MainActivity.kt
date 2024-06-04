@@ -22,6 +22,8 @@ import com.bvc.liveroom.common.net.ApiResult
 import com.bvc.liveroom.data.model.Game
 import com.bvc.liveroom.data.model.RequestToken
 import com.bvc.liveroom.data.repository.GameRepository
+import com.bvc.liveroom.ui.recharge.RechargeActivity
+import com.bvc.liveroom.ui.recharge.RechargeListActivity
 import com.bvc.liveroom.ui.webview.GameWebView
 import kotlinx.coroutines.launch
 
@@ -47,14 +49,14 @@ class MainActivity : ComponentActivity() {
             onStartLocalTestHtmlPage()
         }
 
-        findViewById<Button>(R.id.btn_pay_test).onClick {
-            payTest()
+        findViewById<Button>(R.id.btn_recharge_test).onClick {
+            this@MainActivity.startActivity(Intent(this@MainActivity, RechargeListActivity::class.java))
         }
 
         console = findViewById(R.id.tv_console)
 
         gameList = findViewById<RecyclerView?>(R.id.rv_game_list).apply {
-            layoutManager = GridLayoutManager(this@MainActivity, 4)
+            layoutManager = GridLayoutManager(this@MainActivity, 6)
             val gameList = fetchGameList()
             adapter = GameGridAdapter(gameList) {
                 onStartGame(it)
@@ -102,10 +104,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    private fun payTest() {
-        // TODO
     }
 
     private fun updateConsole(msg: String) {

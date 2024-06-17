@@ -1,5 +1,7 @@
-package com.bvc.liveroom.ui.data
+package com.bvc.liveroom.data.repository
 
+import com.bvc.liveroom.ui.data.LoginDataSource
+import com.bvc.liveroom.ui.data.Result
 import com.bvc.liveroom.ui.data.model.LoggedInUser
 
 /**

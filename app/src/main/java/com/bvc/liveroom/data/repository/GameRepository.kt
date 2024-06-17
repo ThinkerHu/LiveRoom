@@ -12,6 +12,8 @@ import com.bvc.liveroom.data.model.RequestToken
 import com.bvc.liveroom.data.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 object GameRepository {
 
@@ -37,7 +39,50 @@ object GameRepository {
         }
     }
 
+    suspend fun fetchUserInfo2(
+        token: String
+    ): Result<User> = withContext(Dispatchers.IO) {
+        val params = HashMap<String, String>()
+        val heads = hashMapOf(
+            "Authorization" to token
+        )
+        suspendCoroutine {
+            val httpResult = RequestManager().doGetSync(
+                ApiConfig.FETCH_USER_INFO, heads = heads, params = params
+            )
+            when (httpResult) {
+                is HttpResult.Success -> {
+                    val user = httpResult.msg.fromJson<User>()
+                    it.resume(Result.success(user))
+                }
+
+                is HttpResult.Error -> {
+                    it.resume(Result.failure(Exception(httpResult.exception.msg)))
+                }
+            }
+        }
+    }
+
     suspend fun login(userName: String, password: String): ApiResult<RequestToken> =
+        withContext(Dispatchers.IO) {
+            val params = hashMapOf(
+                "username" to userName, "password" to password
+            )
+            RequestManager().doPostSync(ApiConfig.FETCH_TOKEN, params = params).let {
+                when (it) {
+                    is HttpResult.Success -> {
+                        val requestToken = it.msg.fromJson<RequestToken>()
+                        return@let ApiResult.Success(requestToken)
+                    }
+
+                    is HttpResult.Error -> {
+                        return@let ApiResult.Error(it.exception)
+                    }
+                }
+            }
+        }
+
+    suspend fun login2(userName: String, password: String): ApiResult<RequestToken> =
         withContext(Dispatchers.IO) {
             val params = hashMapOf(
                 "username" to userName, "password" to password

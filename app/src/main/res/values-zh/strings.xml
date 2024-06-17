@@ -19,8 +19,4 @@
     <string name="title_recharge">Recharge</string>
     <string name="user_register">register</string>
     <string name="hint_phone_number">Phone Number</string>
-    <string name="hint_password">Password</string>
-    <string name="login">Login</string>
-    <string name="register">Register</string>
-    <string name="forgot_password">Forget Password</string>
 </resources>

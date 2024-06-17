@@ -1,54 +1,60 @@
 package com.bvc.liveroom.ui.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
-import com.bvc.liveroom.R
-import com.bvc.liveroom.ui.data.LoginRepository
-import com.bvc.liveroom.ui.data.Result
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel : ViewModel() {
+    private val _loginState = MutableStateFlow(LoginState())
+    val loginState: StateFlow<LoginState> get() = _loginState
 
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
+    fun sendIntent(intent: LoginIntent) {
+        when (intent) {
+            is LoginIntent.Login -> {
+                performLogin(intent.phoneNumber, intent.password)
+            }
 
-    fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+            is LoginIntent.ForgetPasswordIntent -> {
 
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+            }
+
+            is LoginIntent.RegisterIntent -> {
+
+            }
         }
     }
 
-    fun loginDataChanged(username: String, password: String) {
-        if (!isUserNameValid(username)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
-        } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
-        } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
+    private fun performLogin(phoneNumber: String, password: String) {
+        viewModelScope.launch {
+            _loginState.value = LoginState(isLoading = true)
         }
     }
 
-    // A placeholder username validation check
-    private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains('@')) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            username.isNotBlank()
-        }
-    }
+    fun loginDataChanged(toString: String, toString1: String) {
 
-    // A placeholder password validation check
-    private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
     }
+}
+
+data class LoginState(
+    val isLoading: Boolean = false, val isLoggedIn: Boolean = false, val error: String? = null
+)
+
+sealed class LoginIntent {
+    data class Login(
+        val phoneNumber: String, val password: String
+    ) : LoginIntent()
+
+    data class ForgetPasswordIntent(val context: Context) : LoginIntent()
+
+    data class RegisterIntent(val context: Context) : LoginIntent()
+}
+
+sealed class LoginResult {
+    data object Success : LoginResult()
+    data class Failure(val error: String) : LoginResult()
+    data object Loading : LoginResult()
 }

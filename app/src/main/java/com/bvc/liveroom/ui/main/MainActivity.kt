@@ -50,7 +50,11 @@ class MainActivity : ComponentActivity() {
         }
 
         findViewById<Button>(R.id.btn_recharge_test).onClick {
-            this@MainActivity.startActivity(Intent(this@MainActivity, RechargeListActivity::class.java))
+            this@MainActivity.startActivity(
+                Intent(
+                    this@MainActivity, RechargeListActivity::class.java
+                )
+            )
         }
 
         console = findViewById(R.id.tv_console)
@@ -72,17 +76,11 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             updateConsole("fetchUserInfo")
             token?.getRequestToken().let { userToken ->
-                GameRepository.fetchUserInfo(userToken!!).let {
-                    when (it) {
-                        is ApiResult.Error -> {
-                            updateConsole(it.apiException.msg)
-                        }
-
-                        is ApiResult.Success -> {
-                            updateConsole(it.data.toString())
-                            ApiConfig.user = it.data
-                        }
-                    }
+                GameRepository.fetchUserInfo2(userToken!!).onSuccess {
+                    updateConsole(it.toString())
+                    ApiConfig.user = it
+                }.onFailure {
+                    updateConsole(it.message!!)
                 }
             }
         }
@@ -90,7 +88,7 @@ class MainActivity : ComponentActivity() {
 
     private fun fetchToken() {
         lifecycleScope.launch {
-            GameRepository.login("18100000000", "123456").let {
+            GameRepository.login("18100000001", "123456").let {
                 when (it) {
                     is ApiResult.Error -> {
                         it.apiException.msg.toast(this@MainActivity)

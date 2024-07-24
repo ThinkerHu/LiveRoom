@@ -11,20 +11,19 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bvc.common.network.ApiResult
 import com.bvc.common.tools.fromAssets
 import com.bvc.common.tools.fromJsonToList
 import com.bvc.common.tools.logD
 import com.bvc.common.tools.onClick
 import com.bvc.common.tools.toast
+import com.bvc.game.lib.common.constants.ApiConfig
+import com.bvc.game.lib.data.model.Game
+import com.bvc.game.lib.data.model.RequestToken
+import com.bvc.game.lib.data.repository.GameRepository
+import com.bvc.game.lib.ui.recharge.RechargeListActivity
+import com.bvc.game.lib.ui.webview.GameWebView
 import com.bvc.liveroom.R
-import com.bvc.liveroom.common.constants.ApiConfig
-import com.bvc.liveroom.common.net.ApiResult
-import com.bvc.liveroom.data.model.Game
-import com.bvc.liveroom.data.model.RequestToken
-import com.bvc.liveroom.data.repository.GameRepository
-import com.bvc.liveroom.ui.recharge.RechargeActivity
-import com.bvc.liveroom.ui.recharge.RechargeListActivity
-import com.bvc.liveroom.ui.webview.GameWebView
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -88,7 +87,7 @@ class MainActivity : ComponentActivity() {
 
     private fun fetchToken() {
         lifecycleScope.launch {
-            GameRepository.login("18100000001", "123456").let {
+            GameRepository.login("18100000000", "123456").let {
                 when (it) {
                     is ApiResult.Error -> {
                         it.apiException.msg.toast(this@MainActivity)
@@ -131,7 +130,7 @@ class MainActivity : ComponentActivity() {
         }
         ApiConfig.user!!.apply {
             val gameUrl = formatGameUrl(
-                game.url, uid = id, gameToken = gameToken, gameId = game.id, language = "th-TH"
+                game.url, uid = id, gameToken = gameToken, gameId = game.id, language = "zh-CN"
             )
             gameUrl.logD()
             Intent(this@MainActivity, GameWebView::class.java).apply {

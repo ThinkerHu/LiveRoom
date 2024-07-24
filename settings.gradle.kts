@@ -16,8 +16,7 @@ dependencyResolutionManagement {
 rootProject.name = "LiveRoom"
 include(":app")
 
-include(":Libs:LiveRoomSDK")
-include(":Libs:GameCenter")
 include(":Libs:UI")
 include(":Libs:NetWork")
 include(":Libs:Tools")
+include(":Libs:Game")

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "name": "幸运摩天轮",
+    "url": "https://gztest.leadercc.com/pokavoice_games/wheel/index.html"
+  },
+  {
+    "id": "1",
+    "name": "幸运摩天轮HD",
+    "url": "https://gztest.leadercc.com/pokavoice_games/wheel_medium/index.html"
+  },
+  {
+    "id": "2",
+    "name": "龙虎斗2.0",
+    "url": "https://gztest.leadercc.com/pokavoice_games/dragon_tiger2/index.html"
+  },
+  {
+    "id": "2",
+    "name": "龙虎斗2.0 HD",
+    "url": "https://gztest.leadercc.com/pokavoice_games/dragon_tiger2_medium/index.html"
+  },
+  {
+    "id": "3",
+    "name": "多人捕鱼2.0",
+    "url": "https://gztest.leadercc.com/pokavoice_games/fish6/index.html"
+  },
+  {
+    "id": "3",
+    "name": "多人捕鱼2.0 HD",
+    "url": "https://gztest.leadercc.com/pokavoice_games/fish6_medium/index.html"
+  },
+  {
+    "id": "4",
+    "name": "转盘2.0",
+    "url": "https://gztest.leadercc.com/pokavoice_games/zhuanpan2/index.html"
+  },
+  {
+    "id": "4",
+    "name": "转盘2.0 HD",
+    "url": "https://gztest.leadercc.com/pokavoice_games/zhuanpan2_medium/index.html"
+  },
+  {
+    "id": "5",
+    "name": "水果拉霸2.0",
+    "url": "https://gztest.leadercc.com/pokavoice_games/fruit_liberty_bell/index.html"
+  },
+  {
+    "id": "5",
+    "name": "水果拉霸2.0 HD",
+    "url": "https://gztest.leadercc.com/pokavoice_games/fruit_liberty_bell_medium/index.html"
+  },
+  {
+    "id": "6",
+    "name": "超级财神爷",
+    "url": "https://gztest.leadercc.com/pokavoice_games/super_rich_god/index.html"
+  },
+  {
+    "id": "6",
+    "name": "超级财神爷 HD",
+    "url": "https://gztest.leadercc.com/pokavoice_games/super_rich_god_medium/index.html"
+  }
+]

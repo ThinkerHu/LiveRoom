@@ -1,7 +1,7 @@
 package com.bvc.game.lib.ui.recharge
 
 import androidx.lifecycle.ViewModel
-import com.bvc.common.network.ApiResult
+import com.bvc.network.ApiResult
 import com.bvc.game.lib.common.constants.ApiConfig
 import com.bvc.game.lib.common.constants.workScope
 import com.bvc.game.lib.data.model.RechargeItem

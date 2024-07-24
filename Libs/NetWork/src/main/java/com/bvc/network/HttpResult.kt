@@ -1,4 +1,4 @@
-package com.bvc.common.network
+package com.bvc.network
 
 sealed class HttpResult {
 

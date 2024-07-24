@@ -12,7 +12,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bvc.common.network.ApiResult
+import com.bvc.network.ApiResult
 import com.bvc.common.tools.fromAssets
 import com.bvc.common.tools.fromJsonToList
 import com.bvc.common.tools.onClick

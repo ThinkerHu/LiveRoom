@@ -1,4 +1,4 @@
-package com.bvc.common.network
+package com.bvc.network
 
 sealed class ApiResult<out T : Any> {
     data class Success<out T : Any>(val data: T) : ApiResult<T>()

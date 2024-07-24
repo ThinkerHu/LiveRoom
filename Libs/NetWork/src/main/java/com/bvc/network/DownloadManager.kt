@@ -1,4 +1,4 @@
-package com.bvc.common.network
+package com.bvc.network
 
 import com.bvc.common.tools.copyTo2
 import kotlinx.coroutines.Dispatchers

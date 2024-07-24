@@ -1,16 +1,20 @@
 package com.bvc.game.lib.data.repository
 
-import com.bvc.common.network.ApiResult
-import com.bvc.common.network.HttpResult
-import com.bvc.common.network.RequestManager
+import android.content.Context
+import com.bvc.common.tools.fromAssets
+import com.bvc.network.ApiResult
+import com.bvc.network.HttpResult
+import com.bvc.network.RequestManager
 import com.bvc.common.tools.fromJson
 import com.bvc.common.tools.fromJsonToList
 import com.bvc.game.lib.common.constants.ApiConfig
+import com.bvc.game.lib.data.model.Game
 import com.bvc.game.lib.data.model.RechargeItem
 import com.bvc.game.lib.data.model.RechargeOrder
 import com.bvc.game.lib.data.model.RequestToken
 import com.bvc.game.lib.data.model.User
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -174,4 +178,10 @@ object GameRepository {
                 }
             }
         }
+
+    suspend fun fetchGameList(context: Context): Result<List<Game>> = withContext(Dispatchers.IO) {
+        delay(1000)
+        val gameList = "config/GameList.json".fromAssets(context).fromJsonToList<Game>()
+        return@withContext Result.success(gameList)
+    }
 }

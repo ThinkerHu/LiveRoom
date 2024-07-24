@@ -6,14 +6,14 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_game_cover"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:scaleType="centerCrop" />
+        android:layout_width="100dip"
+        android:layout_height="100dip"
+        android:scaleType="centerInside"
+        android:layout_margin="10dip"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_game_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dip"
-        android:textSize="12sp" />
+        android:textSize="20sp" />
 </LinearLayout>

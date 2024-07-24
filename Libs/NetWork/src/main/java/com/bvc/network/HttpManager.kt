@@ -1,5 +1,6 @@
-package com.bvc.common.network
+package com.bvc.network
 
+import com.bvc.common.network.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -1,4 +1,4 @@
-package com.bvc.liveroom.ui.game
+package com.bvc.game.lib.ui.game
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,17 +16,35 @@ import com.bvc.common.tools.toast
 import com.bvc.game.lib.R
 import com.bvc.game.lib.common.constants.ApiConfig
 import com.bvc.game.lib.data.model.Game
+import com.bvc.game.lib.data.repository.GameRepository
 import com.bvc.game.lib.ui.webview.GameWebView
+import kotlinx.coroutines.launch
 
 class GameListActivity : BaseActivity() {
+    private lateinit var gameListAdapter: GameListAdapter
     private lateinit var gameList: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_game_list)
         gameList = findViewById<RecyclerView>(R.id.rv_game_list).apply {
             layoutManager = GridLayoutManager(this@GameListActivity, 2)
-            adapter = GameListAdapter(listOf()) {
+            gameListAdapter = GameListAdapter(listOf()) {
                 onGameStart(it)
+            }
+            adapter = gameListAdapter
+        }
+        fetchGameList()
+    }
+
+    private fun fetchGameList() {
+        lifecycleScope.launch {
+            GameRepository.fetchGameList(this@GameListActivity).onSuccess {
+                runOnUiThread {
+                    gameListAdapter.updateGameList(it)
+                }
+            }.onFailure {
+
             }
         }
     }
@@ -57,14 +76,19 @@ class GameListActivity : BaseActivity() {
     }
 }
 
-class GameListAdapter(
-    private val gameList: List<Game>, private val onItemClick: (game: Game) -> Unit
+private class GameListAdapter(
+    private var gameList: List<Game>, private val onItemClick: (game: Game) -> Unit
 ) : RecyclerView.Adapter<GameListAdapter.GameViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_game, parent, false)
         return GameViewHolder(view)
+    }
+
+    fun updateGameList(gameList: List<Game>) {
+        this.gameList = gameList
+        notifyItemChanged(-1)
     }
 
     override fun getItemCount(): Int {
@@ -76,7 +100,7 @@ class GameListAdapter(
         holder.apply {
             gameName.text = game.name
             Glide.with(gameCover)
-                .load(game.cover)
+                .load("https://hbimg.b0.upaiyun.com/4b0608d4cd35a0aa9a21e191b9f7703b24d9e4a54dd33-n6UUcv_fw658")
                 .into(gameCover)
             itemView.setOnClickListener {
                 onItemClick(game)

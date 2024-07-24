@@ -11,7 +11,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bvc.common.network.ApiResult
+import com.bvc.network.ApiResult
 import com.bvc.common.tools.fromAssets
 import com.bvc.common.tools.fromJsonToList
 import com.bvc.common.tools.logD
@@ -21,6 +21,7 @@ import com.bvc.game.lib.common.constants.ApiConfig
 import com.bvc.game.lib.data.model.Game
 import com.bvc.game.lib.data.model.RequestToken
 import com.bvc.game.lib.data.repository.GameRepository
+import com.bvc.game.lib.ui.game.GameListActivity
 import com.bvc.game.lib.ui.recharge.RechargeListActivity
 import com.bvc.game.lib.ui.webview.GameWebView
 import com.bvc.liveroom.R
@@ -54,6 +55,12 @@ class MainActivity : ComponentActivity() {
                     this@MainActivity, RechargeListActivity::class.java
                 )
             )
+        }
+
+        findViewById<Button>(R.id.btn_game_list).onClick {
+            Intent(this@MainActivity, GameListActivity::class.java).apply {
+                this@MainActivity.startActivity(this)
+            }
         }
 
         console = findViewById(R.id.tv_console)
@@ -124,7 +131,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onStartGame(game: Game) {
-        if (ApiConfig.user == null) {
+        if(ApiConfig.user == null) {
             getString(R.string.is_not_login).toast(this)
             return
         }

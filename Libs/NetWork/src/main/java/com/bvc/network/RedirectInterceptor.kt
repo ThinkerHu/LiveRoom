@@ -1,4 +1,4 @@
-package com.bvc.common.network
+package com.bvc.network
 
 import okhttp3.Interceptor
 import okhttp3.Response

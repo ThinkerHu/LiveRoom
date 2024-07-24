@@ -1,4 +1,4 @@
-package com.bvc.common.network
+package com.bvc.network
 
 interface HttpResponse {
     fun onSuccess(t: String)

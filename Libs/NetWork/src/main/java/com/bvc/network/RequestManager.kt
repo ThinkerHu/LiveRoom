@@ -1,6 +1,7 @@
-package com.bvc.common.network
+package com.bvc.network
 
 
+import com.bvc.common.network.BuildConfig
 import com.bvc.common.tools.logD
 import com.bvc.common.tools.logE
 import com.bvc.common.tools.logJson

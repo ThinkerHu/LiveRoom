@@ -58,7 +58,7 @@ class GameListActivity : BaseActivity() {
     private fun fetchGameList() {
         lifecycleScope.launch {
             gameSwipeRefreshLayout.isRefreshing = true
-            GameRepository.fetchGameList(this@GameListActivity).onSuccess {
+            GameRepository.fetchGameList(ApiConfig.userToken, 1, 100).onSuccess {
                 gameSwipeRefreshLayout.isRefreshing = false
                 gameListAdapter.updateGameList(it)
             }.onFailure {
@@ -118,7 +118,7 @@ private class GameListAdapter(
         holder.apply {
             gameName.text = game.name
             Glide.with(gameCover)
-                .load("https://hbimg.b0.upaiyun.com/4b0608d4cd35a0aa9a21e191b9f7703b24d9e4a54dd33-n6UUcv_fw658")
+                .load(game.icon)
                 .into(gameCover)
             itemView.setOnClickListener {
                 onItemClick(game)

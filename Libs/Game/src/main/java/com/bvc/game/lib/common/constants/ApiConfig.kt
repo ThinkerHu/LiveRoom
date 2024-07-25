@@ -18,7 +18,7 @@ object ApiConfig {
 
     const val RECHARGE = "${GAME_HOST}user/pay/add"
 
-    const val FETCH_GAME_LIST = ""
+    const val FETCH_GAME_LIST = "${GAME_HOST}games/list"
 
     var userToken =
         "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxODEwMDAwMDAwMCIsImNyZWF0ZWQiOjE3MTU3NTY3NTk4MjIsImV4cCI6MTcxNjM2MTU1OX0.Gsb2ccPXW_mLlTN_A-BwfauXOJmHoJrOAOckRdSzygc"

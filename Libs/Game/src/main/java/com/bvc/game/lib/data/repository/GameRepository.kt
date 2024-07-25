@@ -179,9 +179,38 @@ object GameRepository {
             }
         }
 
-    suspend fun fetchGameList(context: Context): Result<List<Game>> = withContext(Dispatchers.IO) {
-        delay(1000)
-        val gameList = "config/GameList.json".fromAssets(context).fromJsonToList<Game>()
-        return@withContext Result.success(gameList)
-    }
+    suspend fun fetchGameList(token: String, pageNum: Int, pageSize: Int): Result<List<Game>> =
+        withContext(Dispatchers.IO) {
+//        val gameList = "config/GameList.json".fromAssets(context).fromJsonToList<Game>()
+//        return@withContext Result.success(gameList)
+            RequestManager().doPostSync(
+                url = ApiConfig.FETCH_GAME_LIST,
+                heads = hashMapOf(
+                    "Authorization" to token
+                ),
+                params = hashMapOf(
+                    "pageNum" to pageNum.toString(),
+                    "pageSize" to pageSize.toString()
+                )
+            ).let { result ->
+                when (result) {
+                    is HttpResult.Success -> {
+                        val gameList = result.msg.fromJson<GameListResult>()
+                        return@withContext Result.success(gameList.list)
+                    }
+
+                    is HttpResult.Error -> {
+                        return@withContext Result.failure(Exception(result.exception.msg))
+                    }
+                }
+            }
+        }
 }
+
+data class GameListResult(
+    val pageNum: Int,
+    val pageSize: Int,
+    val totalPage: Int,
+    val total: Int,
+    val list: List<Game>
+)

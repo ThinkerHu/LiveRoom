@@ -4,6 +4,6 @@ data class Game(
     val id: String,
     val url: String,
     val name: String,
-    val lan: String,
-    val cover: String
+    val icon: String,
+    val state: Int
 )

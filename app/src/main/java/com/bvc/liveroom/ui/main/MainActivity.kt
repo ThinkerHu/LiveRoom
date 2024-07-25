@@ -82,6 +82,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             updateConsole("fetchUserInfo")
             token?.getRequestToken().let { userToken ->
+                println(userToken)
                 GameRepository.fetchUserInfo2(userToken!!).onSuccess {
                     updateConsole(it.toString())
                     ApiConfig.user = it

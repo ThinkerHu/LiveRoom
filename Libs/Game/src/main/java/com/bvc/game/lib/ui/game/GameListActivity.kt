@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bvc.base.ui.BaseActivity
+import com.bvc.common.tools.onClick
 import com.bvc.common.tools.toast
 import com.bvc.game.lib.R
 import com.bvc.game.lib.common.constants.ApiConfig
@@ -23,10 +26,22 @@ import kotlinx.coroutines.launch
 class GameListActivity : BaseActivity() {
     private lateinit var gameListAdapter: GameListAdapter
     private lateinit var gameList: RecyclerView
+    private lateinit var gameSwipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_game_list)
+        initView()
+        fetchGameList()
+    }
+
+    private fun initView() {
+        gameSwipeRefreshLayout = findViewById<SwipeRefreshLayout?>(R.id.sl_game_refresh).apply {
+            setOnRefreshListener {
+                fetchGameList()
+            }
+        }
+
         gameList = findViewById<RecyclerView>(R.id.rv_game_list).apply {
             layoutManager = GridLayoutManager(this@GameListActivity, 2)
             gameListAdapter = GameListAdapter(listOf()) {
@@ -34,17 +49,20 @@ class GameListActivity : BaseActivity() {
             }
             adapter = gameListAdapter
         }
-        fetchGameList()
+
+        findViewById<ImageView>(R.id.tv_back).onClick {
+            finish()
+        }
     }
 
     private fun fetchGameList() {
         lifecycleScope.launch {
+            gameSwipeRefreshLayout.isRefreshing = true
             GameRepository.fetchGameList(this@GameListActivity).onSuccess {
-                runOnUiThread {
-                    gameListAdapter.updateGameList(it)
-                }
+                gameSwipeRefreshLayout.isRefreshing = false
+                gameListAdapter.updateGameList(it)
             }.onFailure {
-
+                gameSwipeRefreshLayout.isRefreshing = false
             }
         }
     }

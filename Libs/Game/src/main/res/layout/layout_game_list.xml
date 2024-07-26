@@ -19,21 +19,31 @@
             android:layout_height="match_parent"
             android:background="?android:attr/selectableItemBackground"
             android:scaleType="centerInside"
-            android:src="@mipmap/ic_back_white"/>
+            android:src="@mipmap/ic_back_white" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_toEndOf="@+id/tv_back"
             android:text="@string/title_game_list"
-            android:textSize="24sp" />
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground" />
     </RelativeLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/sl_game_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rl_title" >
+        app:layout_constraintTop_toBottomOf="@+id/rl_title">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_game_list"
             android:layout_width="match_parent"

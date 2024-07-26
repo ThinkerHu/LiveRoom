@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -117,6 +116,7 @@ private class GameListAdapter(
         val game = gameList[position]
         holder.apply {
             gameName.text = game.name
+            gameDesc.text = game.desc
             Glide.with(gameCover)
                 .load(game.icon)
                 .into(gameCover)
@@ -128,6 +128,7 @@ private class GameListAdapter(
 
     class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val gameName: AppCompatTextView = itemView.findViewById(R.id.tv_game_name)
+        val gameDesc: AppCompatTextView = itemView.findViewById(R.id.tv_game_desc)
         val gameCover: ImageView = itemView.findViewById(R.id.iv_game_cover)
     }
 }

@@ -1,23 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    app:cardCornerRadius="12dip"
+    app:cardElevation="8dip"
+    android:layout_margin="10dip">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_game_cover"
-        android:layout_width="150dip"
-        android:layout_height="150dip"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dip"
-        android:scaleType="centerInside" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_game_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:gravity="center_horizontal"
-        android:textSize="20sp" />
-</LinearLayout>
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_game_cover"
+            android:layout_width="match_parent"
+            android:layout_height="150dip"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_game_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_game_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="15sp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

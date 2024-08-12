@@ -1,5 +1,6 @@
 package com.bvc.game.lib.ui.game
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
-import com.bvc.base.ui.BaseActivity
+import com.bvc.base.ui.BaseFragment
 import com.bvc.common.tools.onClick
 import com.bvc.common.tools.toast
 import com.bvc.game.lib.R
@@ -22,35 +23,44 @@ import com.bvc.game.lib.data.repository.GameRepository
 import com.bvc.game.lib.ui.webview.GameWebView
 import kotlinx.coroutines.launch
 
-class GameListActivity : BaseActivity() {
-    private lateinit var gameListAdapter: GameListAdapter
+class GameListFragment : BaseFragment() {
+    private lateinit var gameListAdapter: GameListFragmentAdapter
     private lateinit var gameList: RecyclerView
     private lateinit var gameSwipeRefreshLayout: SwipeRefreshLayout
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_game_list)
-//        initView()
-//        fetchGameList()
+    @SuppressLint("InflateParams")
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_game_list, null)
     }
 
-    private fun initView() {
-        gameSwipeRefreshLayout = findViewById<SwipeRefreshLayout?>(R.id.sl_game_refresh).apply {
-            setOnRefreshListener {
-                fetchGameList()
-            }
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView(view)
+        fetchGameList()
+    }
 
-        gameList = findViewById<RecyclerView>(R.id.rv_game_list).apply {
-            layoutManager = GridLayoutManager(this@GameListActivity, 2)
-            gameListAdapter = GameListAdapter(listOf()) {
+    private fun initView(view: View) {
+        gameSwipeRefreshLayout =
+            view.findViewById<SwipeRefreshLayout?>(R.id.sl_game_refresh).apply {
+                setOnRefreshListener {
+                    fetchGameList()
+                }
+            }
+
+        gameList = view.findViewById<RecyclerView>(R.id.rv_game_list).apply {
+            layoutManager = GridLayoutManager(context, 2)
+            gameListAdapter = GameListFragmentAdapter(listOf()) {
                 onGameStart(it)
             }
             adapter = gameListAdapter
         }
 
-        findViewById<ImageView>(R.id.tv_back).onClick {
-            finish()
+        view.findViewById<ImageView>(R.id.tv_back).onClick {
+            activity?.finish()
         }
     }
 
@@ -68,7 +78,7 @@ class GameListActivity : BaseActivity() {
 
     private fun onGameStart(game: Game) {
         if(ApiConfig.user == null) {
-            getString(R.string.is_not_login).toast(this@GameListActivity)
+            getString(R.string.is_not_login).toast(requireContext())
             return
         }
         ApiConfig.user!!.apply {
@@ -79,9 +89,9 @@ class GameListActivity : BaseActivity() {
                 gameId = game.id,
                 language = "zh-CN"
             )
-            Intent(this@GameListActivity, GameWebView::class.java).apply {
+            Intent(requireActivity(), GameWebView::class.java).apply {
                 putExtra("extra_url", gameUrl)
-                this@GameListActivity.startActivity(this)
+                requireContext().startActivity(this)
             }
         }
     }
@@ -93,9 +103,9 @@ class GameListActivity : BaseActivity() {
     }
 }
 
-private class GameListAdapter(
+private class GameListFragmentAdapter(
     private var gameList: List<Game>, private val onItemClick: (game: Game) -> Unit
-) : RecyclerView.Adapter<GameListAdapter.GameViewHolder>() {
+) : RecyclerView.Adapter<GameListFragmentAdapter.GameViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         val view =

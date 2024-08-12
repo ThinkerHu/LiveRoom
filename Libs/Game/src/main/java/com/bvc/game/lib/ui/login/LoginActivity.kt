@@ -8,7 +8,7 @@ import com.bvc.common.tools.onClick
 import com.bvc.game.lib.R
 import com.bvc.game.lib.databinding.ActivityLoginBinding
 
-class LoginActivity : AppCompatActivity() {
+private class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
